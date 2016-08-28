@@ -1,0 +1,12 @@
+[Unit]
+Description=smarthome-events
+After=network.target
+
+[Service]
+User=root
+ExecStart=/home/paulchen/smarthome-events/startup.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
