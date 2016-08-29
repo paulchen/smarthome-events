@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="Database" transaction-type="RESOURCE_LOCAL">
+        <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+
+        <class>at.rueckgr.smarthome.events.entities.Sensor</class>
+        <class>at.rueckgr.smarthome.events.entities.Observation</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/events?autoReconnect=true"/>
+            <property name="javax.persistence.jdbc.user" value="events"/>
+            <property name="javax.persistence.jdbc.password" value="events"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <!--<property name="openjpa.ConnectionFactoryProperties" value="MaxActive=10,MaxIdle=5,MinIdle=2,MaxWait=1800000"/>-->
+            <!--<property name="openjpa.Log" value="File=E:\\temp\\TestOpenJPAPersistence\\org.apache.openjpa.log, DefaultLevel=DEBUG, Runtime=INFO, Tool=INFO, SQL=TRACE"/>-->
+            <!--<property name="openjpa.jdbc.DBDictionary" value="org.apache.openjpa.jdbc.sql.MySQLDictionary"/>-->
+            <!--<property name="openjpa.DataCache" value="true"/>-->
+            <!--<property name="openjpa.QueryCache" value="true"/>-->
+        </properties>
+    </persistence-unit>
+</persistence>

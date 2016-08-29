@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Sensor {
+public class SensorDTO {
     private Long sensorId;
     private Long deviceId;
     private String name;

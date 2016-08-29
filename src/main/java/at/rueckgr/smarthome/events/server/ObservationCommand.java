@@ -1,6 +1,6 @@
 package at.rueckgr.smarthome.events.server;
 
-import at.rueckgr.smarthome.events.model.Observation;
+import at.rueckgr.smarthome.events.model.ObservationDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Clock;
@@ -15,16 +15,16 @@ public class ObservationCommand implements Command {
             return null;
         }
 
-        final Observation observation = parseObservation(parts);
-        if(observation == null) {
+        final ObservationDTO observationDTO = parseObservation(parts);
+        if(observationDTO == null) {
             return null;
         }
 
         SystemStateManager systemStateManager = SystemStateManager.getInstance();
-        return systemStateManager.submitObservation(observation) ? "OK" : "NOK";
+        return systemStateManager.submitObservation(observationDTO) ? "OK" : "NOK";
     }
 
-    private Observation parseObservation(final String[] parts) {
+    private ObservationDTO parseObservation(final String[] parts) {
         final String sensorIdString = parts[1];
         if(!StringUtils.isNumeric(sensorIdString)) {
             return null;
@@ -39,6 +39,6 @@ public class ObservationCommand implements Command {
 
         final String value = parts[3];
 
-        return new Observation(sensorId, timestamp, value);
+        return new ObservationDTO(sensorId, timestamp, value);
     }
 }

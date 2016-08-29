@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class Observation {
+public class ObservationDTO {
     private Long sensorId;
     private LocalDateTime timestamp;
     private String value;

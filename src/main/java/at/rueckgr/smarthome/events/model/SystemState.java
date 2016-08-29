@@ -8,5 +8,5 @@ import java.util.Map;
 @Getter
 @Setter
 public class SystemState {
-    private Map<Long, Sensor> sensors;
+    private Map<Long, SensorDTO> sensors;
 }
