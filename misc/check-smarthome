@@ -1,0 +1,4 @@
+#!/bin/bash
+/usr/lib/nagios/plugins/check_tcp -H localhost -p 9999 -s $'PING\n' -e $'PONG\n' -t 30
+exit $?
+
