@@ -14,6 +14,9 @@ public class ConfigurationManager {
     public static List<SensorDTO> readSensorData() {
         final EntityManager em = Database.getEm();
 
-        return em.createNamedQuery(Sensor.QRY_ALL, SensorDTO.class).getResultList();
+        final List<SensorDTO> resultList = em.createNamedQuery(Sensor.QRY_ALL, SensorDTO.class).getResultList();
+        em.close();
+
+        return resultList;
     }
 }
