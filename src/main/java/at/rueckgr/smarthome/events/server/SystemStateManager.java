@@ -64,6 +64,8 @@ public class SystemStateManager {
         em.persist(observation);
         em.getTransaction().commit();
 
+	em.close();
+
         return true;
     }
 }
