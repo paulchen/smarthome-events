@@ -9,12 +9,17 @@
             <PatternLayout pattern="${PATTERN}"/>
         </Console>
 
+	<File name="fileWriter" fileName="log/log">
+            <PatternLayout pattern="${PATTERN}"/>
+	</File>
+	<!--
         <RollingFile name="fileWriter"
                      fileName="log/log"
                      filePattern="log/log.%d{yyyy-MM-dd-hh-mm}.gz">
             <PatternLayout pattern="${PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
-        </RollingFile>
+	</RollingFile>
+	-->
     </Appenders>
     <Loggers>
         <Root level="DEBUG">
