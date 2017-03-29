@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,11 +21,18 @@ import java.util.Date;
 
 @Entity
 @Table(name = "observation")
+@NamedQueries({
+        @NamedQuery(name = Observation.FIND_NEWEST_OBSERVATION,
+                query = "SELECT o FROM Observation o WHERE o.sensor.sensorId = :sensorId ORDER BY o.timestamp DESC"
+        )
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Observation {
+    public static final String FIND_NEWEST_OBSERVATION = "Observation.findNewestObservation";
+
     @Id
     @Column(name = "observation_id")
     private Long observationId;
