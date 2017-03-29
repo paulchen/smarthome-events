@@ -21,6 +21,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class SystemStateManager {
+    // TODO don't manage a state here
     private static volatile SystemStateManager instance;
 
     private final SystemState systemState;
