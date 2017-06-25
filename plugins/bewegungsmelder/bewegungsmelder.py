@@ -2,7 +2,7 @@
  
 #Import
 import RPi.GPIO as GPIO
-import time, datetime, sys, socket
+import time, datetime, sys, socket, os
 
 
 
@@ -19,12 +19,17 @@ GPIO.setup(PIR_GPIO,GPIO.IN)
 read=0
 wait=0
 
-sensor=1
+sensor=2
 clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-    clientsocket.connect(('localhost', 9999))
+    clientsocket.connect(('alniyat', 9999))
 except socket.error:
     pass
+
+
+def touch(path):
+    with open(path, 'a'):
+        os.utime(path, None)
 
 
 def send(message):
@@ -34,6 +39,12 @@ def send(message):
     while i<3:
         try:
             clientsocket.send(message)
+            response = str(clientsocket.recv(4096)).strip()
+            if response == "OK":
+                touch('/root/bin/bewegungsmelder_success')
+            else:
+                print "Error submitting message:", message
+                print "Response received:", response
             break
 
         except socket.error:
@@ -44,7 +55,7 @@ def send(message):
 
             clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
-                clientsocket.connect(('localhost', 9999))
+                clientsocket.connect(('alniyat', 9999))
             except socket.error:
                 pass
 
