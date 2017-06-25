@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 public class HealthStateDescription implements Serializable, Comparable<HealthStateDescription> {
+    private Long sensorId;
     private HealthState healthState;
     private String description;
 

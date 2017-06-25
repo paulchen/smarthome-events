@@ -18,18 +18,6 @@ public class StatusCommand implements Command {
         SystemHealth systemHealth = systemStateManager.getHealth();
 
         HealthStateDescription healthStateDescription = systemHealth.getOverallHealth();
-        if(systemHealth.getOverallHealth().getHealthState() != HealthState.OK) {
-            for (Map.Entry<Long, HealthStateDescription> entry : systemHealth.getSensorHealth().entrySet()) {
-                final Long sensorId = entry.getKey();
-                final HealthStateDescription sensorHealth = entry.getValue();
-
-                if(healthStateDescription == null || healthStateDescription.compareTo(sensorHealth) > 0) {
-                    sensorHealth.setDescription("Sensor " + sensorId + ": " + sensorHealth.getDescription());
-                    healthStateDescription = sensorHealth;
-                }
-            }
-        }
-
         return MessageFormat.format("{0} {1}", healthStateDescription.getHealthState().ordinal(), healthStateDescription.getDescription());
     }
 }

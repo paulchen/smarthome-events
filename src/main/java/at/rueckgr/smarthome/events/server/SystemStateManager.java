@@ -14,9 +14,7 @@ import org.apache.commons.lang3.Validate;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -110,29 +108,56 @@ public final class SystemStateManager {
 
 
         final Map<Long, HealthStateDescription> sensorHealth = new HashMap<>();
+        final Map<HealthState, List<HealthStateDescription>> sensorsByState = new TreeMap<>();
+        for (HealthState healthState : HealthState.values()) {
+            sensorsByState.put(healthState, new ArrayList<>());
+        }
+
+        HealthState overallHealthState = HealthState.OK;
         for (Long sensorId : systemState.getSensors().keySet()) {
             final ObservationDTO observationDTO = systemState.getLastObservations().get(sensorId);
             final HealthStateDescription health;
             if(observationDTO == null) {
-                health = new HealthStateDescription(HealthState.UNKNOWN, "No sensor value recorded");
+                health = new HealthStateDescription(sensorId, HealthState.UNKNOWN, "No sensor value recorded");
             }
             else {
                 final long age = TimeHelper.getAgeInMinutes(observationDTO.getTimestamp());
                 if(age > 10) {
-                    health = new HealthStateDescription(HealthState.CRITIAL, "Last value older than 10 minutes");
+                    health = new HealthStateDescription(sensorId, HealthState.CRITICAL, "Last value older than 10 minutes");
                 }
                 else if (age > 5) {
-                    health = new HealthStateDescription(HealthState.WARNING, "Last value older than 5 minutes");
+                    health = new HealthStateDescription(sensorId, HealthState.WARNING, "Last value older than 5 minutes");
                 }
                 else {
-                    health = new HealthStateDescription(HealthState.OK, "Value at most 5 minutes old");
+                    health = new HealthStateDescription(sensorId, HealthState.OK, "Value at most 5 minutes old");
                 }
             }
 
             sensorHealth.put(sensorId, health);
+            sensorsByState.get(health.getHealthState()).add(health);
+
+            if(overallHealthState.compareTo(health.getHealthState()) < 0) {
+                overallHealthState = health.getHealthState();
+            }
         }
 
-        final HealthStateDescription overallHealth = new HealthStateDescription(HealthState.OK, "Server working");
+        final StringBuilder s = new StringBuilder("Server working");
+        for (final Map.Entry<HealthState, List<HealthStateDescription>> entry : sensorsByState.entrySet()) {
+            final List<HealthStateDescription> value = entry.getValue();
+            final HealthState key = entry.getKey();
+
+            final String sensorList = value.stream()
+                    .map(HealthStateDescription::getSensorId)
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "));
+
+            s.append("; ")
+                    .append(value.size()).append(" ").append(key.name())
+                    .append(" (").append(sensorList).append(")");
+        }
+
+
+        final HealthStateDescription overallHealth = new HealthStateDescription(null, overallHealthState, s.toString());
         return new SystemHealth(overallHealth, sensorHealth);
 
     }
