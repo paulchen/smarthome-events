@@ -2,6 +2,7 @@ package at.rueckgr.smarthome.events.server;
 
 import at.rueckgr.smarthome.events.entities.Observation;
 import at.rueckgr.smarthome.events.entities.Sensor;
+import at.rueckgr.smarthome.events.main.ConfigurationManager;
 import at.rueckgr.smarthome.events.model.HealthState;
 import at.rueckgr.smarthome.events.model.HealthStateDescription;
 import at.rueckgr.smarthome.events.model.ObservationDTO;
@@ -19,15 +20,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class SystemStateManager {
-    // TODO don't manage a state here
     private static volatile SystemStateManager instance;
-
-    private final SystemState systemState;
 
     private SystemStateManager() {
         // private constructor
-
-        systemState = new SystemState();
     }
 
     public static SystemStateManager getInstance() {
@@ -41,9 +37,10 @@ public final class SystemStateManager {
         return instance;
     }
 
-    public void setSensorData(final List<SensorDTO> sensorDTOs) {
-        Validate.notNull(sensorDTOs);
+    private SystemState getSystemState() {
+        final List<SensorDTO> sensorDTOs = ConfigurationManager.readSensorData();
 
+        final SystemState systemState = new SystemState();
         final Map<Long, SensorDTO> sensorMap = sensorDTOs.stream().collect(Collectors.toMap(SensorDTO::getSensorId, Function.identity()));
         systemState.setSensors(sensorMap);
 
@@ -67,6 +64,8 @@ public final class SystemStateManager {
         em.getTransaction().rollback();
 
         systemState.setLastObservations(lastObservations);
+
+        return systemState;
     }
 
     private ObservationDTO transformToDTO(final Observation observation) {
@@ -77,6 +76,8 @@ public final class SystemStateManager {
 
     public boolean submitObservation(final ObservationDTO observationDTO) {
         Validate.notNull(observationDTO);
+
+        final SystemState systemState = getSystemState();
 
         final Long sensorId = observationDTO.getSensorId();
         if(!systemState.getSensors().containsKey(sensorId)) {
@@ -105,7 +106,7 @@ public final class SystemStateManager {
     }
 
     public SystemHealth getHealth() {
-
+        final SystemState systemState = getSystemState();
 
         final Map<Long, HealthStateDescription> sensorHealth = new HashMap<>();
         final Map<HealthState, List<HealthStateDescription>> sensorsByState = new TreeMap<>();

@@ -16,10 +16,6 @@ public class Main {
 
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
 
-        final SystemStateManager systemStateManager = SystemStateManager.getInstance();
-        final List<SensorDTO> sensorDTOs = ConfigurationManager.readSensorData();
-        systemStateManager.setSensorData(sensorDTOs);
-
         final Server server = new Server();
         final Thread thread = new Thread(server);
         thread.start();
