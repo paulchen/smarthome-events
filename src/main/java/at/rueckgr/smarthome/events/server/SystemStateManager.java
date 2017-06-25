@@ -141,7 +141,8 @@ public final class SystemStateManager {
             }
         }
 
-        final StringBuilder s = new StringBuilder("Server working");
+        final StringBuilder s = new StringBuilder("Server working; ");
+        s.append(sensorHealth.size()).append(" sensors");
         for (final Map.Entry<HealthState, List<HealthStateDescription>> entry : sensorsByState.entrySet()) {
             final List<HealthStateDescription> value = entry.getValue();
             final HealthState key = entry.getKey();
