@@ -15,6 +15,7 @@ public class ClientCommandProcessor {
         final HashMap<String, Command> commandsMap = new HashMap<>();
         commandsMap.put("ping", new PingCommand());
         commandsMap.put("observation", new ObservationCommand());
+        commandsMap.put("status", new StatusCommand());
 
         COMMANDS = Collections.unmodifiableMap(commandsMap);
     }
