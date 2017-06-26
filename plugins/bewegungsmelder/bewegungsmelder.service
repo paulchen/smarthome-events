@@ -1,0 +1,12 @@
+[Unit]
+Description=bewegungsmelder
+After=network.target
+
+[Service]
+User=root
+ExecStart=/home/paulchen/smarthome-events/plugins/bewegungsmelder/bewegungsmelder.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
