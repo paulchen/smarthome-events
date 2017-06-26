@@ -16,6 +16,8 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
     private ServerSocket serverSocket;
     private final int port;
     private Map<Long, ClientHandler> clientHandlers = new HashMap<>();
+    private volatile boolean failure = false;
+    private volatile boolean running = false;
 
     public Server(final int port) {
         this.port = port;
@@ -27,8 +29,11 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
         }
         catch (IOException e) {
             logger.error("Error creating server socket", e.getMessage());
+            failure = true;
             return;
         }
+
+        running = true;
 
         Long clientId = 0L;
         for (; ; ) {
@@ -51,7 +56,9 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
     @Override
     public void shutdown() {
         try {
-            serverSocket.close();
+            if(serverSocket != null) {
+                serverSocket.close();
+            }
         }
         catch (IOException e) {
             // ignore
@@ -65,5 +72,13 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
     @Override
     public void deregister(final Long handlerId) {
         clientHandlers.remove(handlerId);
+    }
+
+    public boolean isFailure() {
+        return failure;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }
