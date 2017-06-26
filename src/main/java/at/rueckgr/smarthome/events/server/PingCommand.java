@@ -1,6 +1,8 @@
 package at.rueckgr.smarthome.events.server;
 
 public class PingCommand implements Command {
+    private static final String NAME = "ping";
+
     @Override
     public String execute(final String[] parts) {
         if(parts.length > 1) {
@@ -8,5 +10,10 @@ public class PingCommand implements Command {
         }
 
         return "PONG";
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 }

@@ -1,13 +1,13 @@
 package at.rueckgr.smarthome.events.server;
 
-import at.rueckgr.smarthome.events.model.HealthState;
 import at.rueckgr.smarthome.events.model.HealthStateDescription;
 import at.rueckgr.smarthome.events.model.SystemHealth;
 
 import java.text.MessageFormat;
-import java.util.Map;
 
 public class StatusCommand implements Command {
+    private static final String NAME = "status";
+
     @Override
     public String execute(final String[] parts) {
         if(parts.length > 1) {
@@ -19,5 +19,10 @@ public class StatusCommand implements Command {
 
         HealthStateDescription healthStateDescription = systemHealth.getOverallHealth();
         return MessageFormat.format("{0} {1}", healthStateDescription.getHealthState().ordinal(), healthStateDescription.getDescription());
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 }
