@@ -17,28 +17,47 @@ public class ClientHandler implements Runnable {
     private final Socket socket;
     private final InputStream inputStream;
     private final OutputStream outputStream;
+    private final ClientHandlerCallback callback;
+    private final Long handlerId;
 
-    public ClientHandler(final Socket socket) throws IOException {
+
+    public ClientHandler(final Socket socket, final Long handlerId, final ClientHandlerCallback callback) throws IOException {
         this.socket = socket;
-        this.inputStream = socket.getInputStream();
-        this.outputStream = socket.getOutputStream();
+        this.callback = callback;
+        this.handlerId = handlerId;
+
+        inputStream = socket.getInputStream();
+        outputStream = socket.getOutputStream();
     }
 
     public void run() {
         logger.info("New client connection from {}:{}", socket.getInetAddress().getHostAddress(), socket.getPort());
+
+        try {
+            doWork();
+        }
+        finally {
+            cleanup();
+            callback.deregister(handlerId);
+        }
+
+        logger.info("Connection from {}:{} closed", socket.getInetAddress().getHostAddress(), socket.getPort());
+    }
+
+    private void doWork() {
 
         final Scanner scanner = new Scanner(inputStream);
         final PrintWriter printWriter = new PrintWriter(outputStream);
 
         final ClientCommandProcessor clientCommandProcessor = new ClientCommandProcessor();
 
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             final String line = scanner.nextLine();
 
             logger.debug("Request: {}", line);
 
             final String response = clientCommandProcessor.processCommand(line);
-            if(StringUtils.isNotBlank(response)) {
+            if (StringUtils.isNotBlank(response)) {
                 logger.debug("Response: {}", response);
 
                 printWriter.println(response);
@@ -48,13 +67,14 @@ public class ClientHandler implements Runnable {
 
         scanner.close();
         printWriter.close();
+    }
+
+    public void cleanup() {
         try {
             socket.close();
         }
         catch (IOException e) {
             // ignore
         }
-
-        logger.info("Connection from {}:{} closed", socket.getInetAddress().getHostAddress(), socket.getPort());
     }
 }
