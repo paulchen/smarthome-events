@@ -1,4 +1,6 @@
 #!/bin/bash
-/usr/lib/nagios/plugins/check_tcp -H localhost -p 9999 -s $'PING\n' -e $'PONG\n' -t 30
-exit $?
+STATUS=`echo status|nc localhost 9999`
+RETURNCODE=`echo $STATUS|sed -e "s/ .*//g"`
+echo $STATUS
+exit $RETURNCODE
 
