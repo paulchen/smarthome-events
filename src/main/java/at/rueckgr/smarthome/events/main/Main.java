@@ -46,6 +46,9 @@ public class Main {
         final Thread thread = new Thread(server);
         thread.start();
 
+        // just to initialize JPA stuff
+        Database.getEm();
+
         try {
             Thread.sleep(5000L);
         }
