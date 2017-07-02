@@ -15,12 +15,14 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
 
     private ServerSocket serverSocket;
     private final int port;
+    private final Object lock;
     private Map<Long, ClientHandler> clientHandlers = new HashMap<>();
     private volatile boolean failure = false;
     private volatile boolean running = false;
 
-    public Server(final int port) {
+    public Server(final int port, final Object lock) {
         this.port = port;
+        this.lock = lock;
     }
 
     public void run() {
@@ -29,11 +31,17 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
         }
         catch (IOException e) {
             logger.error("Error creating server socket", e.getMessage());
-            failure = true;
+            synchronized (lock) {
+                failure = true;
+                lock.notifyAll();
+            }
             return;
         }
 
-        running = true;
+        synchronized (lock) {
+            running = true;
+            lock.notifyAll();
+        }
 
         Long clientId = 0L;
         for (; ; ) {
