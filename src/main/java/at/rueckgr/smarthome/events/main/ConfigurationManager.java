@@ -3,6 +3,7 @@ package at.rueckgr.smarthome.events.main;
 import at.rueckgr.smarthome.events.entities.Sensor;
 import at.rueckgr.smarthome.events.model.SensorDTO;
 import at.rueckgr.smarthome.events.server.Database;
+import at.rueckgr.smarthome.events.server.EntityManagerWrapper;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -12,11 +13,8 @@ import java.util.List;
  */
 public class ConfigurationManager {
     public static List<SensorDTO> readSensorData() {
-        final EntityManager em = Database.getEm();
-
-        final List<SensorDTO> resultList = em.createNamedQuery(Sensor.QRY_ALL, SensorDTO.class).getResultList();
-        em.close();
-
-        return resultList;
+        try (final EntityManagerWrapper em = Database.getEm()) {
+            return em.createNamedQuery(Sensor.QRY_ALL, SensorDTO.class).getResultList();
+        }
     }
 }

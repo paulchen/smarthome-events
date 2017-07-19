@@ -41,7 +41,7 @@ public class Main {
         Runtime.getRuntime().addShutdownHook(hook);
 
         // just to initialize JPA stuff
-        Database.getEm();
+        Database.getEm().close();
 
         final Object lock = new Object();
         final Server server = new Server(Integer.valueOf(properties.getProperty(PropertyKey.PORT)), lock);
