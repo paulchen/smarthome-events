@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/home/paulchen/smarthome-events/plugins/bewegungsmelder/bewegungsmelder.py
+ExecStart=/home/paulchen/smarthome-events/plugins/bewegungsmelder/bewegungsmelder.py 7 2 alniyat 9999 /root/bin/bewegungsmelder_success
 Restart=on-failure
 
 [Install]

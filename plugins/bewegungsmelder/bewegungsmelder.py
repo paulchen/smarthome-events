@@ -11,18 +11,26 @@ print ""
  
 #Board Mode: Angabe der Pin-Nummer
 GPIO.setmode(GPIO.BOARD)
- 
+
+if len(sys.argv) != 6:
+    print "Invalid number of arguments"
+    sys.exit(1)
+
 #GPIO Pin definieren fuer den Dateneingang vom Sensor
-PIR_GPIO = 7
+PIR_GPIO = int(sys.argv[1])
+sensor = int(sys.argv[2])
+server_host = sys.argv[3]
+server_port = int(sys.argv[4])
+success_file = sys.argv[5]
+
 GPIO.setup(PIR_GPIO,GPIO.IN)
  
-read=0
-wait=0
+read = 0
+wait = 0
 
-sensor=2
 clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-    clientsocket.connect(('alniyat', 9999))
+    clientsocket.connect((server_host, server_port))
 except socket.error:
     pass
 
@@ -33,7 +41,7 @@ def touch(path):
 
 
 def send(message):
-    global clientsocket
+    global clientsocket, server_host, server_port, success_file
 
     i=0
     while i<3:
@@ -41,7 +49,7 @@ def send(message):
             clientsocket.send(message)
             response = str(clientsocket.recv(4096)).strip()
             if response == "OK":
-                touch('/root/bin/bewegungsmelder_success')
+                touch(success_file)
             else:
                 print "Error submitting message:", message
                 print "Response received:", response
@@ -55,7 +63,7 @@ def send(message):
 
             clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
-                clientsocket.connect(('alniyat', 9999))
+                clientsocket.connect((server_host, server_port))
             except socket.error:
                 pass
 
