@@ -46,22 +46,22 @@ public final class SystemStateManager {
 
         final Map<Long, ObservationDTO> lastObservations = new HashMap<>();
 
-        final EntityManager em = Database.getEm();
-        em.getTransaction().begin();
-        for (Long sensorId : sensorMap.keySet()) {
-            final TypedQuery<Observation> query = em.createNamedQuery(Observation.FIND_NEWEST_OBSERVATION, Observation.class);
-            query.setParameter("sensorId", sensorId);
-            query.setMaxResults(1);
+        try (final EntityManagerWrapper em = Database.getEm()) {
+            em.getTransaction().begin();
+            for (Long sensorId : sensorMap.keySet()) {
+                final TypedQuery<Observation> query = em.createNamedQuery(Observation.FIND_NEWEST_OBSERVATION, Observation.class);
+                query.setParameter("sensorId", sensorId);
+                query.setMaxResults(1);
 
-            try {
-                final Observation observation = query.getSingleResult();
-                lastObservations.put(sensorId, transformToDTO(observation));
+                try {
+                    final Observation observation = query.getSingleResult();
+                    lastObservations.put(sensorId, transformToDTO(observation));
+                } catch (NoResultException e) {
+                    // do nothing
+                }
             }
-            catch (NoResultException e) {
-                // do nothing
-            }
+            em.getTransaction().rollback();
         }
-        em.getTransaction().rollback();
 
         systemState.setLastObservations(lastObservations);
 
@@ -86,21 +86,18 @@ public final class SystemStateManager {
 
         systemState.getLastObservations().put(sensorId, observationDTO);
 
-        final EntityManager em = Database.getEm();
-        final Sensor sensor = em.getReference(Sensor.class, sensorId);
+        try (final EntityManagerWrapper em = Database.getEm()) {
+            final Sensor sensor = em.getReference(Sensor.class, sensorId);
 
-        Observation observation = new Observation(null,
-                sensor,
-                TimeHelper.toDate(observationDTO.getTimestamp()),
-                observationDTO.getValue());
+            Observation observation = new Observation(null,
+                    sensor,
+                    TimeHelper.toDate(observationDTO.getTimestamp()),
+                    observationDTO.getValue());
 
-        em.getTransaction().begin();
-        em.persist(observation);
-        em.getTransaction().commit();
-
-    	em.close();
-
-        System.gc();
+            em.getTransaction().begin();
+            em.persist(observation);
+            em.getTransaction().commit();
+        }
 
         return true;
     }

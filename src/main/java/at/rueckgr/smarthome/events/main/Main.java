@@ -40,20 +40,27 @@ public class Main {
         ShutdownHook hook = new ShutdownHook();
         Runtime.getRuntime().addShutdownHook(hook);
 
-        final Server server = new Server(Integer.valueOf(properties.getProperty(PropertyKey.PORT)));
+        // just to initialize JPA stuff
+        Database.getEm().close();
+
+        final Object lock = new Object();
+        final Server server = new Server(Integer.valueOf(properties.getProperty(PropertyKey.PORT)), lock);
         hook.addShutdownable(server);
 
         final Thread thread = new Thread(server);
         thread.start();
 
-        // just to initialize JPA stuff
-        Database.getEm();
-
-        try {
-            Thread.sleep(5000L);
-        }
-        catch (InterruptedException e) {
-            // ignore;
+        //noinspection SynchronizationOnLocalVariableOrMethodParameter
+        synchronized (lock) {
+            // wait for the server to start up
+            while(!server.isRunning() && !server.isFailure()) {
+                try {
+                    lock.wait();
+                }
+                catch (InterruptedException e) {
+                    // ignore
+                }
+            }
         }
 
         if (!server.isRunning() || server.isFailure()) {

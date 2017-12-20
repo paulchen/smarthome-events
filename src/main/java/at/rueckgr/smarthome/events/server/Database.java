@@ -15,7 +15,7 @@ public class Database {
 
     private static DatabaseCredentials databaseCredentials;
 
-    public static EntityManager getEm() {
+    public static EntityManagerWrapper getEm() {
         Validate.notNull(databaseCredentials);
 
         if(factory == null) {
@@ -34,7 +34,7 @@ public class Database {
             }
         }
 
-        return factory.createEntityManager();
+        return new EntityManagerWrapper(factory.createEntityManager());
     }
 
     public static void setCredentials(DatabaseCredentials credentials) {

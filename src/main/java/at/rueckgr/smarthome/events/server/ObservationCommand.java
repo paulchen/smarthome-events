@@ -8,6 +8,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class ObservationCommand implements Command {
+    private static final String NAME = "observation";
+
     @Override
     public String execute(final String[] parts) {
         // OBSERVATION sensorId unixTimestamp value
@@ -22,6 +24,11 @@ public class ObservationCommand implements Command {
 
         SystemStateManager systemStateManager = SystemStateManager.getInstance();
         return systemStateManager.submitObservation(observationDTO) ? "OK" : "NOK";
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     private ObservationDTO parseObservation(final String[] parts) {

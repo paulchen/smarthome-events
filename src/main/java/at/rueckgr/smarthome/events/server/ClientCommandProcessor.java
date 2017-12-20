@@ -2,22 +2,35 @@ package at.rueckgr.smarthome.events.server;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.reflections.Reflections;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ClientCommandProcessor {
     private static final Map<String, Command> COMMANDS;
 
     static {
-        // TODO use annotations and reflections here
-        final HashMap<String, Command> commandsMap = new HashMap<>();
-        commandsMap.put("ping", new PingCommand());
-        commandsMap.put("observation", new ObservationCommand());
-        commandsMap.put("status", new StatusCommand());
+        final Map<String, Command> commandsMap =
+                new Reflections(Command.class.getPackage().getName())
+                        .getSubTypesOf(Command.class)
+                        .stream()
+                        .map(ClientCommandProcessor::newInstance)
+                        .collect(Collectors.toMap(Command::getName, Function.identity()));
 
         COMMANDS = Collections.unmodifiableMap(commandsMap);
+    }
+
+
+    private static <T> T newInstance(Class<T> clazz) {
+        try {
+            return clazz.newInstance();
+        }
+        catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String processCommand(final String line) {
