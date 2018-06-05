@@ -30,7 +30,7 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
             serverSocket = new ServerSocket(port);
         }
         catch (IOException e) {
-            logger.error("Error creating server socket", e.getMessage());
+            logger.error("Error creating server socket: {}", e.getMessage());
             synchronized (lock) {
                 failure = true;
                 lock.notifyAll();
