@@ -1,15 +1,20 @@
 package at.rueckgr.smarthome.events.server;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.metamodel.Metamodel;
+import java.util.List;
 import java.util.Map;
 
 public class EntityManagerWrapper implements AutoCloseable, EntityManager {
@@ -145,6 +150,16 @@ public class EntityManagerWrapper implements AutoCloseable, EntityManager {
     }
 
     @Override
+    public Query createQuery(CriteriaUpdate criteriaUpdate) {
+        return delegate.createQuery(criteriaUpdate);
+    }
+
+    @Override
+    public Query createQuery(CriteriaDelete criteriaDelete) {
+        return delegate.createQuery(criteriaDelete);
+    }
+
+    @Override
     public <T> TypedQuery<T> createQuery(String qlString, Class<T> resultClass) {
         return delegate.createQuery(qlString, resultClass);
     }
@@ -175,8 +190,33 @@ public class EntityManagerWrapper implements AutoCloseable, EntityManager {
     }
 
     @Override
+    public StoredProcedureQuery createNamedStoredProcedureQuery(String s) {
+        return delegate.createStoredProcedureQuery(s);
+    }
+
+    @Override
+    public StoredProcedureQuery createStoredProcedureQuery(String s) {
+        return delegate.createStoredProcedureQuery(s);
+    }
+
+    @Override
+    public StoredProcedureQuery createStoredProcedureQuery(String s, Class... classes) {
+        return delegate.createStoredProcedureQuery(s, classes);
+    }
+
+    @Override
+    public StoredProcedureQuery createStoredProcedureQuery(String s, String... strings) {
+        return delegate.createStoredProcedureQuery(s, strings);
+    }
+
+    @Override
     public void joinTransaction() {
         delegate.joinTransaction();
+    }
+
+    @Override
+    public boolean isJoinedToTransaction() {
+        return false;
     }
 
     @Override
@@ -220,5 +260,25 @@ public class EntityManagerWrapper implements AutoCloseable, EntityManager {
     @Override
     public Metamodel getMetamodel() {
         return delegate.getMetamodel();
+    }
+
+    @Override
+    public <T> EntityGraph<T> createEntityGraph(Class<T> aClass) {
+        return delegate.createEntityGraph(aClass);
+    }
+
+    @Override
+    public EntityGraph<?> createEntityGraph(String s) {
+        return delegate.createEntityGraph(s);
+    }
+
+    @Override
+    public EntityGraph<?> getEntityGraph(String s) {
+        return delegate.getEntityGraph(s);
+    }
+
+    @Override
+    public <T> List<EntityGraph<? super T>> getEntityGraphs(Class<T> aClass) {
+        return delegate.getEntityGraphs(aClass);
     }
 }
