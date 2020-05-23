@@ -26,6 +26,10 @@ You may add additional sensors later when needed.
 
 #### Actual server
 
+You will need JDK 11 or higher and Maven.
+
+Compile the server using `mvn clean install appassembler:assemble`. 
+
 Copy `events.properties.dist` to `events.properties` and edit the file accordingly.
 
 Copy `misc/smarthome-events.service` to `/etc/systemd/system` and edit it to your needs.
