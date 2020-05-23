@@ -60,6 +60,6 @@ public class MetricsService {
     }
 
     private boolean metricExceedsLimit(final Metrics metrics, final long limit) {
-        return metrics.getMin() > limit || metrics.getAvg() > limit || metrics.getMax() > limit;
+        return metrics.getMin() > limit || metrics.getAvg() > limit;
     }
 }
