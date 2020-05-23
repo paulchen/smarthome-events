@@ -1,4 +1,4 @@
-package at.rueckgr.smarthome.events.server;
+package at.rueckgr.smarthome.events.server.command;
 
 public class PingCommand implements Command {
     private static final String NAME = "ping";

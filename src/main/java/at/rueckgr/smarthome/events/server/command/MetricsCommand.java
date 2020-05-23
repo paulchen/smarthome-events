@@ -1,4 +1,4 @@
-package at.rueckgr.smarthome.events.server;
+package at.rueckgr.smarthome.events.server.command;
 
 import at.rueckgr.smarthome.events.metrics.Metrics;
 import at.rueckgr.smarthome.events.metrics.MetricsService;

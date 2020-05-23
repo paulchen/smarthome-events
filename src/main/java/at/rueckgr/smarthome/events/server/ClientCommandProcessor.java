@@ -1,5 +1,6 @@
 package at.rueckgr.smarthome.events.server;
 
+import at.rueckgr.smarthome.events.server.command.Command;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.reflections.Reflections;
