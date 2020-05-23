@@ -30,9 +30,9 @@ public class MuninCommand implements Command {
                     items.add("graph_vtitle Seconds");
                     items.add("graph_category smarthome");
 
-                    addConfig(items, "min", "Minimum processing time");
-                    addConfig(items, "max", "Maximum processing time");
-                    addConfig(items, "avg", "Average processing time");
+                    addConfig(items, "min", "Minimum processing time", 1, 2);
+                    addConfig(items, "max", "Maximum processing time", 10, 20);
+                    addConfig(items, "avg", "Average processing time", 1, 2);
 
                     return String.join("\n", items);
 
@@ -58,11 +58,11 @@ public class MuninCommand implements Command {
         return String.join("\n", items);
     }
 
-    private void addConfig(final List<String> items, final String key, final String name) {
+    private void addConfig(final List<String> items, final String key, final String name, double warning, double critical) {
         items.add(key + ".label " + name);
         items.add(key + ".min 0");
-        items.add(key + ".critical 2");
-        items.add(key + ".warning 1");
+        items.add(key + ".critical " + critical);
+        items.add(key + ".warning " + warning);
 
     }
     private void addValue(final List<String> items, final String key, long value) {
