@@ -1,0 +1,12 @@
+#!/bin/bash
+STATUS=`echo metrics|nc -N localhost 9999`
+RETURNCODE=`echo $STATUS|sed -e "s/ .*//g"`
+
+if [ "$STATUS" == "" ]; then
+	echo CRITICAL - Error fetching status
+	exit 2
+fi
+
+echo $STATUS
+exit $RETURNCODE
+
