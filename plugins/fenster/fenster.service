@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/home/paulchen/smarthome-events/plugins/fenster/fenster.py
+ExecStart=/home/paulchen/smarthome-events/plugins/fenster/fenster.py 3:7,4:8,5:9,6:11 hamal 9999 /root/bin/fenster_success
 Restart=on-failure
 
 [Install]
