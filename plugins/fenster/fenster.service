@@ -1,0 +1,12 @@
+[Unit]
+Description=fenster
+After=network.target
+
+[Service]
+User=root
+ExecStart=/home/paulchen/smarthome-events/plugins/fenster/fenster.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
