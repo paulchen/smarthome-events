@@ -3,7 +3,6 @@ package at.rueckgr.smarthome.events.server;
 import at.rueckgr.smarthome.events.main.DatabaseCredentials;
 import org.apache.commons.lang3.Validate;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.Properties;

@@ -1,9 +1,6 @@
 package at.rueckgr.smarthome.events.util;
 
-import at.rueckgr.smarthome.events.entities.Observation;
-
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;

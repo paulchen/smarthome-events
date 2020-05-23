@@ -43,7 +43,7 @@ public class ObservationCommand implements Command {
         if(!StringUtils.isNumeric(unixTimestampString)) {
             return null;
         }
-        final LocalDateTime timestamp = LocalDateTime.ofInstant(Instant.ofEpochSecond(Long.valueOf(unixTimestampString)), Clock.systemDefaultZone().getZone());
+        final LocalDateTime timestamp = LocalDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(unixTimestampString)), Clock.systemDefaultZone().getZone());
 
         final String value = parts[3];
 

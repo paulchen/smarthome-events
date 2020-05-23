@@ -27,7 +27,7 @@ public class ClientCommandProcessor {
 
     private static <T> T newInstance(Class<T> clazz) {
         try {
-            return clazz.newInstance();
+            return clazz.getDeclaredConstructor().newInstance();
         }
         catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
