@@ -58,7 +58,7 @@ Therefore, placing the application somewhere in `/home` and creating a symlink t
 
 ### Clients
 
-Every client runs a certain set of plugins.
+Every client runs a certain set of plugins. They are implemented in Python 3.
 
 #### Plugins
 
