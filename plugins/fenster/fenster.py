@@ -42,7 +42,7 @@ def send(message):
     while i<3:
         try:
             clientsocket.send(str.encode(message))
-            response = str(clientsocket.recv(4096)).strip()
+            response = str(clientsocket.recv(4096).decode('utf-8')).strip()
             if response == "OK":
                 touch(success_file)
             break
