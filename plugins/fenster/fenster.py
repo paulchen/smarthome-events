@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import RPi.GPIO as GPIO, socket, time
 import os, sys
 
 if len(sys.argv) != 5:
-    print "Invalid number of arguments"
+    print("Invalid number of arguments")
     sys.exit(1)
 
 #GPIO Pin definieren fuer den Dateneingang vom Sensor
@@ -41,7 +41,7 @@ def send(message):
     i=0
     while i<3:
         try:
-            clientsocket.send(message)
+            clientsocket.send(str.encode(message))
             response = str(clientsocket.recv(4096)).strip()
             if response == "OK":
                 touch(success_file)
