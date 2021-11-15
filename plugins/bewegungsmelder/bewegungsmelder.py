@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
  
 #Import
 import RPi.GPIO as GPIO
@@ -6,14 +6,14 @@ import time, datetime, sys, socket, os
 
 
 
-print "BEWEGUNGSMELDER"
-print ""
+print("BEWEGUNGSMELDER")
+print("")
  
 #Board Mode: Angabe der Pin-Nummer
 GPIO.setmode(GPIO.BOARD)
 
 if len(sys.argv) != 6:
-    print "Invalid number of arguments"
+    print("Invalid number of arguments")
     sys.exit(1)
 
 #GPIO Pin definieren fuer den Dateneingang vom Sensor
@@ -46,13 +46,14 @@ def send(message):
     i=0
     while i<3:
         try:
+            print("sending message:", message)
             clientsocket.send(message)
             response = str(clientsocket.recv(4096)).strip()
             if response == "OK":
                 touch(success_file)
             else:
-                print "Error submitting message:", message
-                print "Response received:", response
+                print("Error submitting message:", message)
+                print("Response received:", response)
             break
 
         except socket.error:
@@ -71,7 +72,7 @@ def send(message):
         time.sleep(1)
 
     if i==3:
-        print "error sending message: ", message
+        print("error sending message: ", message)
 
 
 
@@ -79,7 +80,7 @@ try:
  #PIR auslesen
  while GPIO.input(PIR_GPIO)==1:
    read=0
- print "WARTEN auf Bewegung..."
+ print("WARTEN auf Bewegung...")
 
  prev_read = 0
  #Abbruch ctrl+c
@@ -112,6 +113,6 @@ try:
    time.sleep(.01)
  
 except KeyboardInterrupt:
- print "Beendet"
+ print("Beendet")
  GPIO.cleanup()
  clientsocket.close()
