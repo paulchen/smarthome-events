@@ -9,7 +9,7 @@ import java.util.List;
 public class ShutdownHook extends Thread {
     private static final Logger logger = LogManager.getLogger();
 
-    private List<Shutdownable> shutdownables = new ArrayList<>();
+    private final List<Shutdownable> shutdownables = new ArrayList<>();
 
     @Override
     public void run() {

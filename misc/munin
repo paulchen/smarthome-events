@@ -1,0 +1,3 @@
+#!/bin/bash
+echo munin $*|nc -N localhost 9999
+

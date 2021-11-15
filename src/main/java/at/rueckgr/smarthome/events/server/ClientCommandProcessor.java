@@ -1,5 +1,6 @@
 package at.rueckgr.smarthome.events.server;
 
+import at.rueckgr.smarthome.events.server.command.Command;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.reflections.Reflections;
@@ -26,7 +27,7 @@ public class ClientCommandProcessor {
 
     private static <T> T newInstance(Class<T> clazz) {
         try {
-            return clazz.newInstance();
+            return clazz.getDeclaredConstructor().newInstance();
         }
         catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);

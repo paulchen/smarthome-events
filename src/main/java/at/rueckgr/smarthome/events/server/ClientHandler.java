@@ -1,5 +1,6 @@
 package at.rueckgr.smarthome.events.server;
 
+import at.rueckgr.smarthome.events.metrics.MetricsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +20,7 @@ public class ClientHandler implements Runnable {
     private final OutputStream outputStream;
     private final ClientHandlerCallback callback;
     private final Long handlerId;
+    private final MetricsService metricsService;
 
 
     public ClientHandler(final Socket socket, final Long handlerId, final ClientHandlerCallback callback) throws IOException {
@@ -28,6 +30,8 @@ public class ClientHandler implements Runnable {
 
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
+
+        metricsService = new MetricsService();
     }
 
     public void run() {
@@ -56,7 +60,10 @@ public class ClientHandler implements Runnable {
 
             logger.debug("Request: {}", line);
 
+            final long startTime = System.currentTimeMillis();
             final String response = clientCommandProcessor.processCommand(line);
+            metricsService.recordExecution(startTime);
+
             if (StringUtils.isNotBlank(response)) {
                 logger.debug("Response: {}", response);
 

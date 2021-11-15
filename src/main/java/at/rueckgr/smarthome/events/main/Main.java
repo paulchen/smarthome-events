@@ -44,7 +44,7 @@ public class Main {
         Database.getEm().close();
 
         final Object lock = new Object();
-        final Server server = new Server(Integer.valueOf(properties.getProperty(PropertyKey.PORT)), lock);
+        final Server server = new Server(Integer.parseInt(properties.getProperty(PropertyKey.PORT)), lock);
         hook.addShutdownable(server);
 
         final Thread thread = new Thread(server);
@@ -65,7 +65,7 @@ public class Main {
 
         if (!server.isRunning() || server.isFailure()) {
             logger.error("Error starting server");
-            hook.run();
+            hook.start();
             return;
         }
 
@@ -75,7 +75,7 @@ public class Main {
         while(scanner.hasNextLine()) {
             final String input = scanner.nextLine();
             if(input.equalsIgnoreCase("quit")) {
-                hook.run();
+                hook.start();
                 break;
             }
         }

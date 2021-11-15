@@ -1,7 +1,8 @@
-package at.rueckgr.smarthome.events.server;
+package at.rueckgr.smarthome.events.server.command;
 
 import at.rueckgr.smarthome.events.model.HealthStateDescription;
 import at.rueckgr.smarthome.events.model.SystemHealth;
+import at.rueckgr.smarthome.events.server.SystemStateManager;
 
 import java.text.MessageFormat;
 

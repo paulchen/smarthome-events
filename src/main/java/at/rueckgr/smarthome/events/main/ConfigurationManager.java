@@ -5,7 +5,6 @@ import at.rueckgr.smarthome.events.model.SensorDTO;
 import at.rueckgr.smarthome.events.server.Database;
 import at.rueckgr.smarthome.events.server.EntityManagerWrapper;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 /**

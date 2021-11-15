@@ -16,7 +16,7 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
     private ServerSocket serverSocket;
     private final int port;
     private final Object lock;
-    private Map<Long, ClientHandler> clientHandlers = new HashMap<>();
+    private final Map<Long, ClientHandler> clientHandlers = new HashMap<>();
     private volatile boolean failure = false;
     private volatile boolean running = false;
 
@@ -53,7 +53,7 @@ public class Server implements Runnable, Shutdownable, ClientHandlerCallback {
                 clientHandlers.put(clientId, clientHandler);
             }
             catch (IOException e) {
-                logger.error("Error accepting client connection", e.getMessage());
+                logger.error("Error accepting client connection", e);
                 break;
             }
             final Thread thread = new Thread(clientHandler);

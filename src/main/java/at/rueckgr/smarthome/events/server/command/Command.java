@@ -1,4 +1,4 @@
-package at.rueckgr.smarthome.events.server;
+package at.rueckgr.smarthome.events.server.command;
 
 public interface Command {
     String execute(String[] parts);
