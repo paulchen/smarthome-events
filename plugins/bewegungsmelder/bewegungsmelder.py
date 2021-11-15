@@ -47,8 +47,8 @@ def send(message):
     while i<3:
         try:
             print("sending message:", message)
-            clientsocket.send(message)
-            response = str(clientsocket.recv(4096)).strip()
+            clientsocket.send(message.encode())
+            response = clientsocket.recv(4096).decode().strip()
             if response == "OK":
                 touch(success_file)
             else:
