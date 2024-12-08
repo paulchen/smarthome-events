@@ -3,8 +3,8 @@ package at.rueckgr.smarthome.events.server;
 import at.rueckgr.smarthome.events.main.DatabaseCredentials;
 import org.apache.commons.lang3.Validate;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import java.util.Properties;
 
 public class Database {
@@ -21,10 +21,10 @@ public class Database {
             synchronized (Database.class) {
                 if(factory == null) {
                     final Properties properties = new Properties();
-                    properties.put("javax.persistence.jdbc.url", databaseCredentials.getUrl());
-                    properties.put("javax.persistence.jdbc.user", databaseCredentials.getUsername());
-                    properties.put("javax.persistence.jdbc.password", databaseCredentials.getPassword());
-                    properties.put("javax.persistence.jdbc.driver", databaseCredentials.getDriver());
+                    properties.put("jakarta.persistence.jdbc.url", databaseCredentials.getUrl());
+                    properties.put("jakarta.persistence.jdbc.user", databaseCredentials.getUsername());
+                    properties.put("jakarta.persistence.jdbc.password", databaseCredentials.getPassword());
+                    properties.put("jakarta.persistence.jdbc.driver", databaseCredentials.getDriver());
 
                     factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, properties);
                 }

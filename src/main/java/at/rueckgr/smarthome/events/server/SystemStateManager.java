@@ -12,8 +12,8 @@ import at.rueckgr.smarthome.events.model.SystemState;
 import at.rueckgr.smarthome.events.util.TimeHelper;
 import org.apache.commons.lang3.Validate;
 
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
