@@ -11,21 +11,42 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <commons-lang3.version>3.12.0</commons-lang3.version>
-        <commons-collections4.version>4.4</commons-collections4.version>
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <lombok.version>1.18.24</lombok.version>
-        <log4j.version>2.17.2</log4j.version>
-        <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <commons-collections4.version>4.5.0-M2</commons-collections4.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <lombok.version>1.18.36</lombok.version>
+        <log4j.version>2.24.2</log4j.version>
+        <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
         <appassembler-maven-plugin.version>2.1.0</appassembler-maven-plugin.version>
         <openjpa.version>3.2.2</openjpa.version>
-        <mysql.version>8.0.29</mysql.version>
+        <mysql.version>8.0.33</mysql.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <reflections.version>0.10.2</reflections.version>
     </properties>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.8.1</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -86,6 +107,26 @@
                         <version>${openjpa.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.18.0</version>
+                <configuration>
+                    <ruleSet>
+                        <ignoreVersions>
+                            <ignoreVersion>
+                                <type>regex</type>
+                                <version>.*alpha.*</version>
+                            </ignoreVersion>
+                            <ignoreVersion>
+                                <type>regex</type>
+                                <version>.*beta.*</version>
+                            </ignoreVersion>
+                        </ignoreVersions>
+                    </ruleSet>
+                </configuration>
             </plugin>
         </plugins>
 
