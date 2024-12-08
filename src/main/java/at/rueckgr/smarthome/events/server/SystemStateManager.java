@@ -74,7 +74,7 @@ public final class SystemStateManager {
     }
 
     public boolean submitObservation(final ObservationDTO observationDTO) {
-        Validate.notNull(observationDTO);
+        Validate.notNull(observationDTO, "observationDTO must not be null");
 
         final SystemState systemState = getSystemState();
 

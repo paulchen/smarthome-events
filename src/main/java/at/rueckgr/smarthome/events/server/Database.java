@@ -10,12 +10,12 @@ import java.util.Properties;
 public class Database {
     private static final String PERSISTENCE_UNIT_NAME = "Database";
 
-    private static EntityManagerFactory factory;
+    private volatile static EntityManagerFactory factory;
 
     private static DatabaseCredentials databaseCredentials;
 
     public static EntityManagerWrapper getEm() {
-        Validate.notNull(databaseCredentials);
+        Validate.notNull(databaseCredentials, "database credentials are required");
 
         if(factory == null) {
             synchronized (Database.class) {
