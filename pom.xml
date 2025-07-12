@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <commons-collections4.version>4.5.0-M2</commons-collections4.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <lombok.version>1.18.36</lombok.version>
